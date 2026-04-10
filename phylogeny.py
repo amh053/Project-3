@@ -17,15 +17,15 @@ class Sequence:
     def build_dict(self, file_names):
         pass
 
-    class DistanceMatrix:
-        def __init__(self , matrix , dict_sequences):
-            pass
+class DistanceMatrix:
+    def __init__(self , matrix , dict_sequences):
+        pass
 
-        def build_matrix(self):
-            pass
+    def build_matrix(self):
+        pass
 
-        def global_alignment(self , seq1 , seq2 , sigma , indel):
-            pass
+    def global_alignment(self , seq1 , seq2 , sigma , indel):
+        pass
 
 
 class Node:
