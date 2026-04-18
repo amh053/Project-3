@@ -1,6 +1,5 @@
 
 
-
 class Sequence:
     def __init__(self , virus_name, DNA: str = '', RNA: str = '', protein: str = ''):
         self.virus_name = virus_name
@@ -49,14 +48,60 @@ class Sequence:
 
 
 class DistanceMatrix:
-    def __init__(self , matrix , dict_sequences):
-        pass
+    def __init__(self , dict_sequences):
+        self.matrix = Array()
+        self.dict_sequences = dict_sequences
+        self.virus_names = list(dict_sequences.keys())
 
-    def build_matrix(self):
-        pass
+    def build_matrix(self,sigma,indel):
+        n = len(self.virus_names)
+
+        for i in range(n + 1):
+            temp = Array()
+            for j in range(n + 1):
+                temp.append(0)
+            self.matrix.append(temp)
+
+        for i in range(n):
+            for j in range(i,n):
+                seq1 = self.dict_sequences[self.virus_names[i]]
+                seq2 = self.dict_sequences[self.virus_names[j]]
+
+                align_score = DistanceMatrix.global_alignment(seq1,seq2,sigma,indel)
+
+                distance = -align_score
+
+                self.matrix[i][j] = distance
+                self.matrix[j][i] = distance
+
+
 
     def global_alignment(self , seq1 , seq2 , sigma , indel):
-        pass
+        m = len(seq1)
+        n = len(seq2)
+        matrix = Array()
+
+        for i in range(m + 1):
+            temp = Array()
+            for j in range(n + 1):
+                temp.append(0)
+            matrix.append(temp)
+
+        for i in range(1, m + 1):
+            matrix[i][0] = matrix[i - 1][0] + indel
+
+        for j in range(1, n + 1):
+            matrix[0][j] = matrix[0][j - 1] + indel
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                match = matrix[i - 1][j - 1] + sigma[(seq1[i - 1], seq2[j - 1])]
+                delete = matrix[i - 1][j] + indel
+                insert = matrix[i][j - 1] + indel
+
+                matrix[i][j] = max(match, delete, insert)
+
+        return matrix[m][n]
 
 
 class Node:
